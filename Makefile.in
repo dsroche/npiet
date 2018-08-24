@@ -66,7 +66,7 @@ CFLAGS = $(FLAGS) $(PROF) $(CYG) $(WARN) $(DEFS) $(LIBDIRPATH)
 ##
 ## How to build the target:
 ##
-all:		npiet npiet-foogol html
+all:		npiet html
 
 npiet:		npiet.o
 	$(CC) $(LDFLAGS) $(PROF) -o npiet npiet.o $(LIBS)
@@ -74,7 +74,7 @@ npiet:		npiet.o
 npiet.o:	npiet.c
 	$(CC) $(CFLAGS) $(PROF) -c npiet.c
 
-html:	npiet.1.html npietedit.1.html npiet-foogol.1.html
+html:	npiet.1.html npietedit.1.html
 
 npiet.1.html:	npiet.1
 	groff -man -T html npiet.1 > npiet.1.html
@@ -82,34 +82,18 @@ npiet.1.html:	npiet.1
 npietedit.1.html:	npietedit.1
 	groff -man -T html npietedit.1 > npietedit.1.html
 
-npiet-foogol.1.html:	npiet-foogol.1
-	groff -man -T html npiet-foogol.1 > npiet-foogol.1.html
-
 win:
 	cp -p *.html win
 	cp -p npietedit win/npietedit.tcl
 	chmod -x win/*
 
-al:	ftest
-
-npiet-foogol:           npiet-foogol.o
-	$(CC) $(LDFLAGS) $(PROF) -o npiet-foogol npiet-foogol.o $(LIBS)
-
-npiet-foogol.o:		npiet-foogol.c
-	$(CC) $(CFLAGS) $(PROF) -c npiet-foogol.c
-
-npiet-foogol.c:         npiet-foogol.y
-	bison -v -t -o npiet-foogol.c npiet-foogol.y
-
-ftest:	npiet-foogol
-	./npiet-foogol a.foo
+al:
 
 
 test:	check
 
 check:
 	(cd examples ; make)
-	(cd foo ; make)
 
 ##
 ## installation:
@@ -117,10 +101,8 @@ check:
 install:	$(PRG)
 	$(INSTALL_PROGRAM) npiet $(BINDIR)
 	$(INSTALL_PROGRAM) npietedit $(BINDIR)
-	$(INSTALL_PROGRAM) npiet-foogol $(BINDIR)
 	$(INSTALL_DATA) npiet.1  $(MANDIR)
 	$(INSTALL_DATA) npietedit.1 $(MANDIR)
-	$(INSTALL_DATA) npiet-foogol.1 $(MANDIR)
 
 ##
 ## some possible ``clean'' targets:
